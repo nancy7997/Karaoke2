@@ -79,7 +79,7 @@
         .modal-content { background: var(--spotify-dark); padding: 25px; border-radius: 25px; width: 85%; border: 1px solid #444; }
         .modal button { margin: 10px 0; width: 100%; padding: 20px; font-weight: bold; border-radius: 12px; border: none; font-size: 1.1em; cursor: pointer;}
 
-        /* --- WINNER SCREEN --- */
+        /* --- GRAND FINALE WINNER SCREEN --- */
         #winner-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 2000; flex-direction: column;
@@ -117,9 +117,7 @@
         <div class="controls-row">
             <div id="timer">02:00</div>
             <button onclick="spinWheel()" id="spinBtn" class="btn-main" style="background:var(--spotify-green); color:white;">SPIN</button>
-            
             <button onclick="openSpotify()" id="spotifyBtn" class="btn-main" style="background:#1DB954; color:white; display:none;">OPEN SPOTIFY</button>
-            
             <button onclick="earlyStop()" id="stopBtn" class="btn-main" style="background:#e74c3c; color:white; display:none;">STOP</button>
         </div>
 
@@ -173,15 +171,16 @@
     <script>
         const categories = ["1950s - 1970s", "1980s", "1990s", "2000s", "2010s", "2020s", "Nancy’s Playlist"];
         
-        // PASTE YOUR SPOTIFY LINKS HERE
+        // --- IMPORTANT: PASTE YOUR REAL LINKS HERE ---
+        // Format should be "https://open.spotify.com/playlist/YOUR_ID"
         const playlistLinks = {
-            "1950s - 1970s": "https://open.spotify.com/playlist/6oxGO5FdeHeCV51qQxEnt2?si=vvCD0yYkSnCCcRQho8JTpw&pi=jhz31JZyQd6qz&pt=e108179e454ca5a14a8c4b5a35441c58",
-            "1980s": "https://open.spotify.com/playlist/5TLJweL0ZII5RivIFERq9V?si=hO7IeBCZRg-gXQ6Wafm4pQ&pt=e762913376578a73a6c80c6a9a930c7f&pi=7nhQL17HRfqBH",
-            "1990s": "https://open.spotify.com/playlist/47bjMPTiZlEm3qFj60LUjJ?si=QkZ_zK6yQ5al8uf35Z7gOA&pi=srJUhOdAQcisM&pt=468460404fc7db256a4c6beda0e454fe",
-            "2000s": "https://open.spotify.com/playlist/1gAgamvfnwbdG6NMVJLGhb?si=mnaLOMTaRXi7dBCte2La-A&pt=d69396d3f5d694c1409bc7ea9fff857a&pi=q6s1rzSKStqdf",
-            "2010s": "https://open.spotify.com/playlist/0E9azkeP65e65bX7jVejj2?si=bYuqqAqhTliNL3e3cOitKg&pt=6366029dc4740df927a465bf0917901b&pi=MvDQPXQ2QeSME",
-            "2020s": "https://open.spotify.com/playlist/3gP2Pvr4aKEdA879n2VaXN?si=ScfMDbJ8RLuBdier2BvhiA&pt=f54873bf422a561dfaa01a4bbcdba5ca&pi=Sm7hTGhITkKCe",
-            "Nancy’s Playlist": "https://open.spotify.com/playlist/1U4jVu3JHo5RI4gItCUTQs?si=XmJpcJ84TVu3p0BLcpjINg&pi=PPrT8TBhS6CBz"
+            "1950s - 1970s": "https://open.spotify.com/playlist/6oxGO5FdeHeCV51qQxEnt2?si=pznkyBPRQiCVPewRTkIwAg&pi=_zDB4RTaRCu88&pt=1610196e3572ed4d52bd40f10319e5cf",
+            "1980s": "https://open.spotify.com/playlist/5TLJweL0ZII5RivIFERq9V?si=3sJGZ1SRQem359v2YeD47g&pt=300ea815ea9aeed2c35768849ddb04bb&pi=VsdDzKAVQM-9I",
+            "1990s": "https://open.spotify.com/playlist/47bjMPTiZlEm3qFj60LUjJ?si=LPhbmW42TbiZHsnNBeTaJg&pi=kY1MazAXTq6Ga&pt=77f88bbe9ee2a053658844c2b1a4b07d",
+            "2000s": "https://open.spotify.com/playlist/1gAgamvfnwbdG6NMVJLGhb?si=KFWAUT74Q7SLvAHpQ0TBnQ&pi=2J8RE7WZSd-s5&pt=621d74d77f5e28133d561374e4da4b6c",
+            "2010s": "https://open.spotify.com/playlist/0E9azkeP65e65bX7jVejj2?si=eCxLkWBbSuGwgi_tY9MVpw&pt=ed06ce77569cf33a4b16c026b30c901c&pi=mcLz-NRZQJ-bU",
+            "2020s": "https://open.spotify.com/playlist/3gP2Pvr4aKEdA879n2VaXN?si=nnP2g_toQ8uq3NjcmgzxNQ&pt=c8c4e697b30c662764a45ba014816e27&pi=Kdni817GRga4G",
+            "Nancy’s Playlist": "https://open.spotify.com/playlist/1U4jVu3JHo5RI4gItCUTQs?si=n69ej1OUSeScMMeyiWU-4Q&pi=jZ-0ipe1QeOcq"
         };
 
         const sliceColors = ['#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4'];
@@ -252,7 +251,7 @@
         function spinWheel() {
             document.getElementById('spinBtn').style.display = 'none';
             const prizeIndex = Math.floor(Math.random() * categories.length);
-            selectedCategory = categories[prizeIndex]; // Store the category
+            selectedCategory = categories[prizeIndex];
             
             const degreePerSlice = 360 / categories.length;
             const stopAngle = 360 - (prizeIndex * degreePerSlice) - (degreePerSlice / 2);
@@ -268,7 +267,11 @@
 
         function openSpotify() {
             const url = playlistLinks[selectedCategory];
-            if (url) window.open(url, '_blank');
+            if (url && url !== "REPLACE_THIS_WITH_REAL_LINK") {
+                window.open(url, '_blank');
+            } else {
+                alert("Please add your Spotify playlist links to the code first!");
+            }
         }
 
         function startTimer() {
