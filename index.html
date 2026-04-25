@@ -182,7 +182,46 @@
             "2020s": "spotify:playlist:3gP2Pvr4aKEdA879n2VaXN?si=nnP2g_toQ8uq3NjcmgzxNQ&pt=c8c4e697b30c662764a45ba014816e27&pi=Kdni817GRga4G",
             "Nancy’s Playlist": "spotify:playlist:1U4jVu3JHo5RI4gItCUTQs?si=n69ej1OUSeScMMeyiWU-4Q&pi=jZ-0ipe1QeOcq"
         };
+let selectedCategory = ""; // This variable stores the winner
 
+function spinWheel() {
+    document.getElementById('spinBtn').style.display = 'none';
+    
+    // Pick the winner
+    const prizeIndex = Math.floor(Math.random() * categories.length);
+    
+    // SET THE WINNER IMMEDIATELY
+    selectedCategory = categories[prizeIndex]; 
+    console.log("The winner is: " + selectedCategory); // For debugging
+
+    const degreePerSlice = 360 / categories.length;
+    const stopAngle = 360 - (prizeIndex * degreePerSlice) - (degreePerSlice / 2);
+    currentRotation += (360 * 5) + stopAngle - (currentRotation % 360);
+    
+    document.getElementById('wheel-canvas').style.transform = `rotate(${currentRotation}deg)`;
+    
+    setTimeout(() => { 
+        document.getElementById('stopBtn').style.display = 'inline-block';
+        document.getElementById('spotifyBtn').style.display = 'inline-block';
+        
+        // Update the banner so you know exactly what the code thinks won
+        document.getElementById('selection-banner').innerText = selectedCategory;
+        
+        startTimer(); 
+    }, 4000); 
+}
+
+function openSpotify() {
+    // This grabs the link for the CATEGORY THAT JUST WON
+    const url = playlistLinks[selectedCategory];
+    
+    if (url && url !== "YOUR_ID_HERE") {
+        // We use _system on iOS/iPad to force the app to wake up
+        window.location.href = url; 
+    } else {
+        alert("Wait! You haven't added the real link for " + selectedCategory + " yet.");
+    }
+}
         const sliceColors = ['#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4'];
         const congratsColors = ['#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000'];
 
