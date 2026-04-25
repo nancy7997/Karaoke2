@@ -27,7 +27,7 @@
             overflow: hidden;
         }
 
-        /* --- NEW CLEAN INTRO --- */
+        /* --- INTRO ANIMATION --- */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 1000; display: flex; flex-direction: column;
@@ -39,7 +39,7 @@
             display: flex;
             white-space: nowrap;
             margin: 10px 0;
-            transform: translateX(100%); /* Start off-screen right */
+            transform: translateX(100%);
             animation: scrollIn 2s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -54,21 +54,14 @@
             animation: bounceUpDown 0.6s infinite alternate ease-in-out;
         }
 
-        /* Entry Animation */
-        @keyframes scrollIn {
-            to { transform: translateX(0); }
-        }
+        @keyframes scrollIn { to { transform: translateX(0); } }
 
-        /* Bouncing Animation while scrolling */
         @keyframes bounceUpDown {
             from { transform: translateY(0); }
             to { transform: translateY(-25px); }
         }
 
-        /* Jiggle Animation once finished scrolling */
-        .jiggle {
-            animation: jiggleLetters 0.3s infinite !important;
-        }
+        .jiggle { animation: jiggleLetters 0.3s infinite !important; }
 
         @keyframes jiggleLetters {
             0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -91,7 +84,7 @@
         .score-num { font-size: 1.4em; color: var(--spotify-green); font-weight: 800; display: block;}
 
         .controls-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
-        #timer { font-size: 42px; font-weight: 800; background: #333; padding: 8px 15px; border-radius: 12px; min-width: 120px; }
+        #timer { font-size: 42px; font-weight: 800; background: #333; padding: 8px 15px; border-radius: 12px; min-width: 140px; }
         
         #selection-banner {
             font-size: 1.8em; font-weight: 900; color: #FFFFFF;
@@ -107,7 +100,6 @@
 
         .btn-main { padding:15px 30px; border-radius:12px; border:none; font-weight:900; cursor: pointer; text-transform: uppercase; }
 
-        /* --- MODALS --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.96); z-index: 500; flex-direction: column; justify-content: center; align-items: center;
@@ -115,7 +107,6 @@
         .modal-content { background: var(--spotify-dark); padding: 25px; border-radius: 25px; width: 85%; border: 1px solid #444; }
         .modal button { margin: 10px 0; width: 100%; padding: 20px; font-weight: bold; border-radius: 12px; border: none; font-size: 1.1em; cursor: pointer;}
 
-        /* --- FINALE --- */
         #winner-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 2000; flex-direction: column;
@@ -146,7 +137,7 @@
         </div>
 
         <div class="controls-row">
-            <div id="timer">02:00</div>
+            <div id="timer">02:25</div>
             <button onclick="spinWheel()" id="spinBtn" class="btn-main" style="background:var(--spotify-green); color:white;">SPIN</button>
             <button onclick="earlyStop()" id="stopBtn" class="btn-main" style="background:#e74c3c; color:white; display:none;">STOP</button>
         </div>
@@ -163,7 +154,7 @@
 
     <div id="choiceModal" class="modal">
         <div class="modal-content">
-            <h2 id="choice-team-name">Ready?</h2>
+            <h2 id="choice-team-name" style="color:white;">Ready?</h2>
             <button onclick="startSpinMode()" style="background:var(--spotify-green); color:white;">LET’S KARAOKE</button>
             <button onclick="startGuessMode()" style="background:#3498db; color:white;">NAME THAT SONG/ARTIST</button>
         </div>
@@ -171,16 +162,19 @@
 
     <div id="spinScoreModal" class="modal">
         <div class="modal-content">
-            <h2>Did they sing?</h2>
+            <h2 style="color:white;">Did they sing?</h2>
             <button onclick="recordScore(100)" style="background:var(--spotify-green); color:white;">YES (100)</button>
+            <button onclick="recordScore(25)" style="background:#f1c40f; color:black;">OTHER (25)</button>
             <button onclick="recordScore(0)" style="background:#e74c3c; color:white;">NO (0)</button>
         </div>
     </div>
 
     <div id="guessScoreModal" class="modal">
         <div class="modal-content">
-            <h2>What did they guess?</h2>
+            <h2 style="color:white;">What did they guess?</h2>
             <button onclick="recordScore(50)" style="background:var(--spotify-green); color:white;">BOTH (50)</button>
+            <button onclick="recordScore(15)" style="background:#3498db; color:white;">ARTIST ONLY (15)</button>
+            <button onclick="recordScore(10)" style="background:#9b59b6; color:white;">SONG ONLY (10)</button>
             <button onclick="recordScore(0)" style="background:#e74c3c; color:white;">NONE (0)</button>
         </div>
     </div>
@@ -191,7 +185,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        const categories = ["1950s - 1970s", "1980s", "1990s", "2000s", "2010s", "2020s", "Nancy’s Playlist"];
+        // Updated Category
+        const categories = ["1950s - 1970s", "1980s", "1990s", "2000s", "2010s", "2020s", "Host’s Choice"];
         const sliceColors = ['#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#42d4f4'];
 
         let team1Name, team2Name, currentTeam = 1, score1 = 0, score2 = 0, turnCount = 0, currentMode = '';
@@ -202,15 +197,13 @@
             createLetters("KARAOKE", "row-1", 0);
             createLetters("ROULETTE", "row-2", 3);
 
-            // After 3 seconds (when scrolling and bouncing is done)
             setTimeout(() => {
                 const letters = document.querySelectorAll('.block-letter');
                 letters.forEach(l => {
-                    l.style.animation = "none"; // Stop bounce
-                    l.classList.add('jiggle'); // Start jiggle
+                    l.style.animation = "none";
+                    l.classList.add('jiggle');
                 });
 
-                // Transition to game setup
                 setTimeout(() => {
                     document.getElementById('intro-overlay').style.opacity = '0';
                     setTimeout(() => {
@@ -279,7 +272,7 @@
             const degreePerSlice = 360 / categories.length;
             const stopAngle = 360 - (prizeIndex * degreePerSlice) - (degreePerSlice / 2);
             currentRotation += (360 * 5) + stopAngle - (currentRotation % 360);
-            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            document.getElementById('wheel-canvas').style.transform = `rotate(${currentRotation}deg)`;
             setTimeout(() => { 
                 document.getElementById('stopBtn').style.display = 'inline-block';
                 document.getElementById('selection-banner').innerText = categories[prizeIndex];
@@ -288,7 +281,7 @@
         }
 
         function startTimer() {
-            let time = 120;
+            let time = 145; // 2 minutes 25 seconds
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 time--;
@@ -311,7 +304,7 @@
             else { score2 += pts; document.getElementById('s2').innerText = score2; currentTeam = 1; }
             turnCount++;
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-            document.getElementById('timer').innerText = "02:00";
+            document.getElementById('timer').innerText = "02:25";
             document.getElementById('t1-box').classList.toggle('active-team');
             document.getElementById('t2-box').classList.toggle('active-team');
             if (turnCount >= 10) endGame();
